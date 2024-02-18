@@ -1,38 +1,75 @@
-# create-svelte
+# The blue button should be red...
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
-
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
+## steps taken to create this project
 
 ```bash
-# create a new project in the current directory
-npm create svelte@latest
 
 # create a new project in my-app
-npm create svelte@latest my-app
+npm create svelte@latest pcssverify
+cd pcssverify
+npx svelte-add@latest postcss --postcss-autoprefixer
+pnpm install
+pnpm add -D @csstools/postcss-cascade-layers
 ```
 
-## Developing
+Added `postcssCascadeLayers` to the postcss.config.js file
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+```javascript
+const autoprefixer = require("autoprefixer");
+const postcssCascadeLayers = require('@csstools/postcss-cascade-layers');
 
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+const config = {
+  plugins: [
+    autoprefixer,
+    postcssCascadeLayers()
+  ],
+};
 ```
 
-## Building
+## There are three files involved...
 
-To create a production version of your app:
+### 1. src/routes/+page.svelte
+This file ought to "win" the background color, since both other definitions are in `@layer`s.
+```html
+<button class="btn">hello</button>
 
-```bash
-npm run build
+<style lang=postcss>
+  .btn {
+    background-color: red;
+    cursor: grab;
+  }
+</style>
 ```
 
-You can preview the production build with `npm run preview`.
+### 2. src/app.pcss
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+```css
+@import 'src/css/index.css';
+
+@layer base {
+    .btn {
+        background-color: blue;
+        color: white;
+        cursor: pointer;
+    }
+}
+```
+
+### 3. src/css/index.css
+
+```css
+@layer core {
+    .btn {
+        background-color: green;
+        color: white;
+        cursor: crosshair;
+    }
+}
+```
+
+## The result is...
+
+![alt text](image.png)
+
+where the app.pcss style is winning:
+![alt text](image-1.png)

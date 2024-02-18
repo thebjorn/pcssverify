@@ -1,0 +1,7 @@
+@layer core {
+    .btn {
+        background-color: green;
+        color: white;
+        cursor: crosshair;
+    }
+}
