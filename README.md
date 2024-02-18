@@ -73,3 +73,10 @@ This file ought to "win" the background color, since both other definitions are 
 
 where the app.pcss style is winning:
 ![alt text](image-1.png)
+
+### The expected result is...
+
+If I remove `postcssCascadeLayers` from the postcss.config.js file, I get the expected result:
+
+
+![alt text](image-2.png)
